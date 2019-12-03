@@ -147,9 +147,10 @@ const cssSelectorBuilder = {
   string: '',
   flags: [false, false, false, false, false, false],
 
-  cloneInstance(obj) {
+  cloneInstance(obj, order) {
     const newInstance = { ...obj };
     newInstance.flags = obj.flags.slice();
+    newInstance.flags[order] = true;
     return newInstance;
   },
 
@@ -163,9 +164,8 @@ const cssSelectorBuilder = {
     if (this.flags[0]) throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
     this.checkOrder(0);
 
-    const newInstance = this.cloneInstance(this);
+    const newInstance = this.cloneInstance(this, 0);
     newInstance.string += value;
-    newInstance.flags[0] = '1';
 
     return newInstance;
   },
@@ -174,9 +174,8 @@ const cssSelectorBuilder = {
     if (this.flags[1]) throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
     this.checkOrder(1);
 
-    const newInstance = this.cloneInstance(this);
+    const newInstance = this.cloneInstance(this, 1);
     newInstance.string += `#${value}`;
-    newInstance.flags[1] = true;
 
     return newInstance;
   },
@@ -184,9 +183,8 @@ const cssSelectorBuilder = {
   class(value) {
     this.checkOrder(2);
 
-    const newInstance = this.cloneInstance(this);
+    const newInstance = this.cloneInstance(this, 2);
     newInstance.string += `.${value}`;
-    newInstance.flags[2] = true;
 
     return newInstance;
   },
@@ -194,9 +192,8 @@ const cssSelectorBuilder = {
   attr(value) {
     this.checkOrder(3);
 
-    const newInstance = this.cloneInstance(this);
+    const newInstance = this.cloneInstance(this, 3);
     newInstance.string += `[${value}]`;
-    newInstance.flags[3] = true;
 
     return newInstance;
   },
@@ -204,9 +201,8 @@ const cssSelectorBuilder = {
   pseudoClass(value) {
     this.checkOrder(4);
 
-    const newInstance = this.cloneInstance(this);
+    const newInstance = this.cloneInstance(this, 4);
     newInstance.string += `:${value}`;
-    newInstance.flags[4] = true;
 
     return newInstance;
   },
@@ -215,9 +211,8 @@ const cssSelectorBuilder = {
     if (this.flags[5]) throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
     this.checkOrder(5);
 
-    const newInstance = this.cloneInstance(this);
+    const newInstance = this.cloneInstance(this, 5);
     newInstance.string += `::${value}`;
-    newInstance.flags[5] = true;
 
     return newInstance;
   },
