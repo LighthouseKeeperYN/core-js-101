@@ -28,8 +28,13 @@
  *      .catch((error) => console.log(error.message)) // 'Error: Wrong parameter is passed!
  *                                                    //  Ask her again.';
  */
-function willYouMarryMe(/* isPositiveAnswer */) {
-  throw new Error('Not implemented');
+function willYouMarryMe(isPositiveAnswer) {
+  return new Promise((resolve, reject) => {
+    if (typeof isPositiveAnswer !== 'boolean') reject(new Error('Wrong parameter is passed! Ask her again.'));
+
+    if (isPositiveAnswer) resolve('Hooray!!! She said "Yes"!');
+    else resolve('Oh no, she said "No".');
+  });
 }
 
 
@@ -48,8 +53,8 @@ function willYouMarryMe(/* isPositiveAnswer */) {
  *    })
  *
  */
-function processAllPromises(/* array */) {
-  throw new Error('Not implemented');
+function processAllPromises(array) {
+  return Promise.all(array);
 }
 
 /**
@@ -71,8 +76,8 @@ function processAllPromises(/* array */) {
  *    })
  *
  */
-function getFastestPromise(/* array */) {
-  throw new Error('Not implemented');
+function getFastestPromise(array) {
+  return Promise.race(array);
 }
 
 /**
@@ -92,8 +97,27 @@ function getFastestPromise(/* array */) {
  *    });
  *
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+
+function chainPromises(array, action) {
+  const result = [];
+  const errorLog = [];
+
+  async function resolveRecursively(arr, index = 0) {
+    if (index === arr.length) return result;
+
+    try {
+      const res = await arr[index];
+      result.push(res);
+    } catch (err) { errorLog.push(err); }
+
+    await resolveRecursively(arr, index + 1);
+
+    return result;
+  }
+
+  return new Promise((resolve) => {
+    resolveRecursively(array).then((resArr) => resolve(resArr.reduce(action)));
+  });
 }
 
 module.exports = {

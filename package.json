@@ -4,12 +4,15 @@
   "description": "Core JS 101",
   "scripts": {
     "test": "npm run lint && mocha",
-    "lint": "node node_modules/eslint/bin/eslint.js ./src"
+    "test:nolint": "mocha",
+    "test:fix": "npm run lint:fix && mocha",
+    "lint": "node node_modules/eslint/bin/eslint.js ./src",
+    "lint:fix": "node node_modules/eslint/bin/eslint.js --fix ./src"
   },
   "author": "aorgish, mikhama",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^6.6.0",
+    "eslint": "^6.7.2",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "mocha": "^6.2.2"
