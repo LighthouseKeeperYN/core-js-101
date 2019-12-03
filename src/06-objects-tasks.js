@@ -154,15 +154,16 @@ const cssSelectorBuilder = {
     return newInstance;
   },
 
-  checkOrder(order) {
+  checkFlags(order, checkCall) {
+    if (checkCall && this.flags[order]) throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+
     for (let i = order + 1; i < this.flags.length; i += 1) {
       if (this.flags[i]) throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
     }
   },
 
   element(value) {
-    if (this.flags[0]) throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
-    this.checkOrder(0);
+    this.checkFlags(0, true);
 
     const newInstance = this.cloneInstance(this, 0);
     newInstance.string += value;
@@ -171,8 +172,7 @@ const cssSelectorBuilder = {
   },
 
   id(value) {
-    if (this.flags[1]) throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
-    this.checkOrder(1);
+    this.checkFlags(1, true);
 
     const newInstance = this.cloneInstance(this, 1);
     newInstance.string += `#${value}`;
@@ -181,7 +181,7 @@ const cssSelectorBuilder = {
   },
 
   class(value) {
-    this.checkOrder(2);
+    this.checkFlags(2);
 
     const newInstance = this.cloneInstance(this, 2);
     newInstance.string += `.${value}`;
@@ -190,7 +190,7 @@ const cssSelectorBuilder = {
   },
 
   attr(value) {
-    this.checkOrder(3);
+    this.checkFlags(3);
 
     const newInstance = this.cloneInstance(this, 3);
     newInstance.string += `[${value}]`;
@@ -199,7 +199,7 @@ const cssSelectorBuilder = {
   },
 
   pseudoClass(value) {
-    this.checkOrder(4);
+    this.checkFlags(4);
 
     const newInstance = this.cloneInstance(this, 4);
     newInstance.string += `:${value}`;
@@ -208,8 +208,7 @@ const cssSelectorBuilder = {
   },
 
   pseudoElement(value) {
-    if (this.flags[5]) throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
-    this.checkOrder(5);
+    this.checkFlags(5, true);
 
     const newInstance = this.cloneInstance(this, 5);
     newInstance.string += `::${value}`;
