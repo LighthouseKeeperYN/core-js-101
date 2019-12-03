@@ -111,38 +111,6 @@ function fromJSON(proto, json) {
  *
  *  For more examples see unit tests.
  */
-
-// const cssSelectorBuilder = {
-//   element(/* value */) {
-//     throw new Error('Not implemented');
-//   },
-
-//   id(/* value */) {
-//     throw new Error('Not implemented');
-//   },
-
-//   class(/* value */) {
-//     throw new Error('Not implemented');
-//   },
-
-//   attr(/* value */) {
-//     throw new Error('Not implemented');
-//   },
-
-//   pseudoClass(/* value */) {
-//     throw new Error('Not implemented');
-//   },
-
-//   pseudoElement(/* value */) {
-//     throw new Error('Not implemented');
-//   },
-
-//   combine(/* selector1, combinator, selector2 */) {
-//     throw new Error('Not implemented');
-//   },
-// };
-
-
 const cssSelectorBuilder = {
   string: '',
   flags: [false, false, false, false, false, false],
