@@ -153,16 +153,15 @@ const cssSelectorBuilder = {
     return newInstance;
   },
 
-  isCorrectOrder(order) {
+  checkOrder(order) {
     for (let i = order + 1; i < this.flags.length; i += 1) {
-      if (this.flags[i]) return false;
+      if (this.flags[i]) throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
     }
-    return true;
   },
 
   element(value) {
     if (this.flags[0]) throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
-    if (!this.isCorrectOrder(0)) throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    this.checkOrder(0);
 
     const newInstance = this.cloneInstance(this);
     newInstance.string += value;
@@ -173,7 +172,7 @@ const cssSelectorBuilder = {
 
   id(value) {
     if (this.flags[1]) throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
-    if (!this.isCorrectOrder(1)) throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    this.checkOrder(1);
 
     const newInstance = this.cloneInstance(this);
     newInstance.string += `#${value}`;
@@ -183,7 +182,7 @@ const cssSelectorBuilder = {
   },
 
   class(value) {
-    if (!this.isCorrectOrder(2)) throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    this.checkOrder(2);
 
     const newInstance = this.cloneInstance(this);
     newInstance.string += `.${value}`;
@@ -193,7 +192,7 @@ const cssSelectorBuilder = {
   },
 
   attr(value) {
-    if (!this.isCorrectOrder(3)) throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    this.checkOrder(3);
 
     const newInstance = this.cloneInstance(this);
     newInstance.string += `[${value}]`;
@@ -203,7 +202,7 @@ const cssSelectorBuilder = {
   },
 
   pseudoClass(value) {
-    if (!this.isCorrectOrder(4)) throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    this.checkOrder(4);
 
     const newInstance = this.cloneInstance(this);
     newInstance.string += `:${value}`;
@@ -214,7 +213,7 @@ const cssSelectorBuilder = {
 
   pseudoElement(value) {
     if (this.flags[5]) throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
-    if (!this.isCorrectOrder(5)) throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+    this.checkOrder(5);
 
     const newInstance = this.cloneInstance(this);
     newInstance.string += `::${value}`;
