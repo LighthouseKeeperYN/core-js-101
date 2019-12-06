@@ -479,7 +479,7 @@ function getMatrixProduct(m1, m2) {
  */
 function evaluateTicTacToePosition(position) {
   const cost = { X: 1, 0: -1, undefined: 0 };
-  const result = { [position.length]: 'X', [-position.length]: '0', undefined: 0 };
+  const result = { [position.length]: 'X', [-position.length]: '0' };
 
   let lineD1 = 0;
   let lineD2 = 0;
